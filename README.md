@@ -52,4 +52,4 @@ Sistemos sudedamosios dalys:
  
 Paveikslėlyje pavaizduota kuriamos sistemos diegimo diagrama. Naudotojas turėdamas kompiuterį su naršykle, gali pasiekti internetinę aplikaciją HTTP protokolu. Sugeneruotos užklausos yra perduodamos į sistemos taikomąją programą, kurioje užklausa yra apdorojama, jei reikia ji kreipiasi į SQL Server duomenų bazę JDBC ryšiu, bei naudojantis ORM sąsajom, ir sugeneruojamas atsakas. Visa sistema yra talpianama Azure serveryje.
 
-
+![image_test](https://user-images.githubusercontent.com/79359651/191044984-36640eb8-814b-4dd7-bfd1-330ed6a38f1d.png)
