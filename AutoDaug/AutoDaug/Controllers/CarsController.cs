@@ -21,15 +21,16 @@ namespace AutoDaug.Controllers
             _context = context;
         }
 
-        // GET: api/Cars
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Car>>> GetCar()
         {
             return await _context.Cars.ToListAsync();
         }
 
-        // GET: api/Cars/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Car>> GetCar(int id)
         {
             var car = await _context.Cars.FindAsync(id);
@@ -42,9 +43,9 @@ namespace AutoDaug.Controllers
             return car;
         }
 
-        // PUT: api/Cars/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PutCar(int id, Car car)
         {
             if (id != car.Id)
@@ -70,22 +71,28 @@ namespace AutoDaug.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(car);
         }
 
-        // POST: api/Cars
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Car>> PostCar(Car car)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             _context.Cars.Add(car);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCar", new { id = car.Id }, car);
         }
 
-        // DELETE: api/Cars/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCar(int id)
         {
             var car = await _context.Cars.FindAsync(id);

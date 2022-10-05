@@ -21,15 +21,16 @@ namespace AutoDaug.Controllers
             _context = context;
         }
 
-        // GET: api/Adverts
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Advert>>> GetAdvert()
         {
             return await _context.Adverts.ToListAsync();
         }
 
-        // GET: api/Adverts/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Advert>> GetAdvert(int id)
         {
             var advert = await _context.Adverts.FindAsync(id);
@@ -42,9 +43,9 @@ namespace AutoDaug.Controllers
             return advert;
         }
 
-        // PUT: api/Adverts/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PutAdvert(int id, Advert advert)
         {
             if (id != advert.Id)
@@ -70,22 +71,28 @@ namespace AutoDaug.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(advert);
         }
 
-        // POST: api/Adverts
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Advert>> PostAdvert(Advert advert)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             _context.Adverts.Add(advert);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAdvert", new { id = advert.Id }, advert);
         }
 
-        // DELETE: api/Adverts/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAdvert(int id)
         {
             var advert = await _context.Adverts.FindAsync(id);

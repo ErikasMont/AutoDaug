@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoDaug.DataContext;
 using AutoDaug.Models;
+using AutoDaug.Responses;
+using AutoDaug.Requests;
 
 namespace AutoDaug.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -21,15 +23,16 @@ namespace AutoDaug.Controllers
             _context = context;
         }
 
-        // GET: api/Users
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
             return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Users/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -42,9 +45,9 @@ namespace AutoDaug.Controllers
             return user;
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
@@ -70,22 +73,64 @@ namespace AutoDaug.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(user);
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<User>> Register(User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Users/5
+        [HttpPost("confirm/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Confirm(int id)
+        {
+            if (!UserExists(id))
+            {
+                return BadRequest();
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
+            user.AccountState = "Confirmed";
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(user);
+        }
+
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<LoginResponse>> Login(LoginRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var foundUser = await _context.Users.FirstOrDefaultAsync(user => user.Username == request.Username);
+            // Check if password and username matches and if state is confirmed
+
+            var response = new LoginResponse { Username = request.Username, Password = request.Password, Token = "eyasdag4e6541ag14ae14fga63e464", Role = "User" };
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
