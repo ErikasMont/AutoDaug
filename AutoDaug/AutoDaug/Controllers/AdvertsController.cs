@@ -7,32 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoDaug.DataContext;
 using AutoDaug.Models;
+using AutoDaug.Auth;
 
 namespace AutoDaug.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/adverts")]
     [ApiController]
     public class AdvertsController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly JwtTokenService _jwtTokenService;
 
-        public AdvertsController(ApiDbContext context)
+        public AdvertsController(ApiDbContext context, JwtTokenService jwtTokenService)
         {
             _context = context;
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<IEnumerable<Advert>>> GetAdvert()
         {
-            return await _context.Adverts.ToListAsync();
+            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+
+            if (authUser.Error != null)
+            {
+                return Unauthorized(authUser.Error);
+            }
+
+            return _context.Adverts.Any() ? Ok(await _context.Adverts.ToListAsync()) : NotFound();
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Advert>> GetAdvert(int id)
         {
+            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+
+            if (authUser.Error != null)
+            {
+                return Unauthorized(authUser.Error);
+            }
+
             var advert = await _context.Adverts.FindAsync(id);
 
             if (advert == null)
@@ -46,8 +65,16 @@ namespace AutoDaug.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> PutAdvert(int id, Advert advert)
         {
+            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+
+            if (authUser.Error != null)
+            {
+                return Unauthorized(authUser.Error);
+            }
+
             if (id != advert.Id)
             {
                 return BadRequest();
@@ -77,11 +104,24 @@ namespace AutoDaug.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Advert>> PostAdvert(Advert advert)
         {
+            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+
+            if (authUser.Error != null)
+            {
+                return Unauthorized(authUser.Error);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
+            }
+
+            if(!_context.AdvertTypes.Any(x => x.Id == advert.AdvertType_Id) || _context.Users.Any(x => x.Id == advert.User_Id))
+            {
+                return BadRequest("Given user id or advert type id is not existant");
             }
 
             _context.Adverts.Add(advert);
@@ -92,9 +132,17 @@ namespace AutoDaug.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAdvert(int id)
         {
+            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+
+            if (authUser.Error != null)
+            {
+                return Unauthorized(authUser.Error);
+            }
+
             var advert = await _context.Adverts.FindAsync(id);
             if (advert == null)
             {
