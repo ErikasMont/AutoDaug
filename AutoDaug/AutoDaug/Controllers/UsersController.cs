@@ -69,7 +69,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserDto user)
         {
             var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
 
@@ -78,28 +78,22 @@ namespace AutoDaug.Controllers
                 return Unauthorized(authUser.Error);
             }
 
-            if (id != user.Id)
+            if(authUser.Role != "admin" && authUser.UserId != id)
             {
-                return BadRequest();
+                return StatusCode(403);
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            var foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if(foundUser == null)
+            {
+                return NotFound("User does not exist");
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            foundUser.Username = user.Username;
+            foundUser.PhoneNumber = user.PhoneNumber;
+
+            _context.Users.Update(foundUser);
+            await _context.SaveChangesAsync();
 
             return Ok(user);
         }
@@ -183,7 +177,7 @@ namespace AutoDaug.Controllers
             {
                 HttpOnly = true
             });
-            var response = new LoginResponse { Username = request.Username, Password = request.Password, Token = jwt, IsAdmin = false };
+            var response = new LoginResponse { Username = foundUser.Username, Password = foundUser.Password, Token = jwt, IsAdmin = foundUser.IsAdmin };
             return Ok(response);
         }
 
@@ -209,6 +203,11 @@ namespace AutoDaug.Controllers
             if(_context.Cars.Any(car => car.User_Id == user.Id))
             {
                 return Conflict("User has cars, can't delete");
+            }
+
+            if(_context.Adverts.Any(advert => advert.User_Id == user.Id))
+            {
+                return Conflict("User has adverts, can't delete");
             }
 
             _context.Users.Remove(user);

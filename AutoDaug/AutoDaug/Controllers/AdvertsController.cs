@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoDaug.DataContext;
 using AutoDaug.Models;
 using AutoDaug.Auth;
+using System.Net;
+using AutoDaug.Requests;
 
 namespace AutoDaug.Controllers
 {
@@ -66,7 +68,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> PutAdvert(int id, Advert advert)
+        public async Task<IActionResult> PutAdvert(int id, AdvertDto advert)
         {
             var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
 
@@ -75,28 +77,23 @@ namespace AutoDaug.Controllers
                 return Unauthorized(authUser.Error);
             }
 
-            if (id != advert.Id)
+            var foundAdvert = await _context.Adverts.FirstOrDefaultAsync(x => x.Id == id);
+            if (foundAdvert == null)
             {
-                return BadRequest();
+                return NotFound("The advert does not exist");
             }
 
-            _context.Entry(advert).State = EntityState.Modified;
+            if (authUser.Role != "admin" && authUser.UserId != foundAdvert.User_Id)
+            {
+                return StatusCode(403);
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AdvertExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            foundAdvert.Price = advert.Price;
+            foundAdvert.Name = advert.Name;
+            foundAdvert.Description = advert.Description;
+
+            _context.Adverts.Update(foundAdvert);
+            await _context.SaveChangesAsync();
 
             return Ok(advert);
         }
@@ -119,7 +116,7 @@ namespace AutoDaug.Controllers
                 return BadRequest();
             }
 
-            if(!_context.AdvertTypes.Any(x => x.Id == advert.AdvertType_Id) || _context.Users.Any(x => x.Id == advert.User_Id))
+            if(!_context.AdvertTypes.Any(x => x.Id == advert.AdvertType_Id) || !_context.Users.Any(x => x.Id == advert.User_Id))
             {
                 return BadRequest("Given user id or advert type id is not existant");
             }
@@ -147,6 +144,11 @@ namespace AutoDaug.Controllers
             if (advert == null)
             {
                 return NotFound();
+            }
+
+            if (authUser.Role != "admin" && authUser.UserId != advert.User_Id)
+            {
+                return StatusCode(403);
             }
 
             _context.Adverts.Remove(advert);

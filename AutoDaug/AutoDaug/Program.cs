@@ -10,7 +10,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connString = builder.Configuration["DBConnectionString"];
+var connString = builder.Configuration["AZURE_SQL_CONNECTIONSTRING"];
 builder.Services.AddDbContext<ApiDbContext>(option => option.UseSqlServer(connString));
 
 

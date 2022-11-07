@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoDaug.DataContext;
 using AutoDaug.Models;
 using AutoDaug.Auth;
+using AutoDaug.Requests;
 
 namespace AutoDaug.Controllers
 {
@@ -66,7 +67,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> PutCar(int id, Car car)
+        public async Task<IActionResult> PutCar(int id, CarDto car)
         {
             var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
 
@@ -75,28 +76,29 @@ namespace AutoDaug.Controllers
                 return Unauthorized(authUser.Error);
             }
 
-            if (id != car.Id)
+            var foundCar = await _context.Cars.FirstOrDefaultAsync(x => x.Id == id);
+            if(foundCar == null)
             {
-                return BadRequest();
+                return NotFound("The car does not exist");
             }
 
-            _context.Entry(car).State = EntityState.Modified;
+            if (authUser.Role != "admin" && authUser.UserId != foundCar.User_Id)
+            {
+                return StatusCode(403);
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CarExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            foundCar.Make = car.Make;
+            foundCar.Model = car.Model;
+            foundCar.ManufactureDate = car.ManufactureDate;
+            foundCar.Engine = car.Engine;
+            foundCar.Color = car.Color;
+            foundCar.Gearbox = car.Gearbox;
+            foundCar.GasType = car.GasType;
+            foundCar.Advert_Id = car.Advert_Id;
+            foundCar.Milage = car.Milage;
+
+            _context.Cars.Update(foundCar);
+            await _context.SaveChangesAsync();
 
             return Ok(car);
         }
@@ -146,6 +148,11 @@ namespace AutoDaug.Controllers
             if (car == null)
             {
                 return NotFound();
+            }
+
+            if (authUser.Role != "admin" && authUser.UserId != car.User_Id)
+            {
+                return StatusCode(403);
             }
 
             _context.Cars.Remove(car);

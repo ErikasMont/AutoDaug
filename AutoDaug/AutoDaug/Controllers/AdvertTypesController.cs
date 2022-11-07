@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoDaug.DataContext;
 using AutoDaug.Models;
 using AutoDaug.Auth;
+using AutoDaug.Requests;
 
 namespace AutoDaug.Controllers
 {
@@ -92,7 +93,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> PutAdvertType(int id, AdvertType advertType)
+        public async Task<IActionResult> PutAdvertType(int id, AdvertTypeDto advertType)
         {
             var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], true);
 
@@ -101,28 +102,17 @@ namespace AutoDaug.Controllers
                 return Unauthorized(authUser.Error);
             }
 
-            if (id != advertType.Id)
+            var foundType = await _context.AdvertTypes.FirstOrDefaultAsync(x => x.Id == id);
+            if(foundType == null)
             {
-                return BadRequest();
+                return NotFound("Advert type is not existant");
             }
 
-            _context.Entry(advertType).State = EntityState.Modified;
+            foundType.Name = advertType.Name;
+            foundType.Description = advertType.Description;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AdvertTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _context.AdvertTypes.Update(foundType);
+            await _context.SaveChangesAsync();
 
             return Ok(advertType);
         }
