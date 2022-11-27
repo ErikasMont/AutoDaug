@@ -30,7 +30,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<IEnumerable<Car>>> GetCar()
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -46,7 +46,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Car>> GetCar(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -69,7 +69,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> PutCar(int id, CarDto car)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -109,7 +109,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Car>> PostCar(Car car)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -137,7 +137,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteCar(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {

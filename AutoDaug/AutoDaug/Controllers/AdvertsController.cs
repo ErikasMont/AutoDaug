@@ -31,7 +31,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<IEnumerable<Advert>>> GetAdvert()
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -47,7 +47,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Advert>> GetAdvert(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -70,7 +70,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> PutAdvert(int id, AdvertDto advert)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -104,7 +104,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Advert>> PostAdvert(Advert advert)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -133,7 +133,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAdvert(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {

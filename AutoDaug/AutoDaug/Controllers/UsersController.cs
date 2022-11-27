@@ -32,7 +32,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], true);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, true);
 
             if (authUser.Error != null)
             {
@@ -48,7 +48,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -71,7 +71,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> PutUser(int id, UserDto user)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -89,6 +89,10 @@ namespace AutoDaug.Controllers
                 return NotFound("User does not exist");
             }
 
+            var sameName = _context.Users.FirstOrDefault(e => e.Username.Equals(user.Username));
+            if (sameName != null)
+                return Conflict("There is a user with the same username, please try again");
+
             foundUser.Username = user.Username;
             foundUser.PhoneNumber = user.PhoneNumber;
 
@@ -105,7 +109,7 @@ namespace AutoDaug.Controllers
         {
             var sameName = _context.Users.FirstOrDefault(e => e.Username.Equals(request.Username));
             if (sameName != null)
-                return Conflict();
+                return Conflict("There is a user with the same username, please try again");
 
             var user = new User
             {
@@ -127,7 +131,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Confirm(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], true);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, true);
 
             if(authUser.Error != null)
             {
@@ -175,9 +179,10 @@ namespace AutoDaug.Controllers
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
-                HttpOnly = true
+                HttpOnly = true,
+                Domain = null
             });
-            var response = new LoginResponse { Username = foundUser.Username, Password = foundUser.Password, Token = jwt, IsAdmin = foundUser.IsAdmin };
+            var response = new LoginResponse { Id = foundUser.Id, Username = foundUser.Username, Password = foundUser.Password, Token = jwt, IsAdmin = foundUser.IsAdmin };
             return Ok(response);
         }
 
@@ -187,7 +192,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], true);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, true);
 
             if (authUser.Error != null)
             {
@@ -220,7 +225,11 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("jwt");
+            Response.Cookies.Delete("jwt", new CookieOptions()
+            {
+                Domain = null,
+                HttpOnly = true
+            });
             return Ok("Logged out");
         }
 

@@ -30,7 +30,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<IEnumerable<AdvertType>>> GetAdvertType()
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -46,7 +46,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<AdvertType>> GetAdvertType(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -69,7 +69,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Advert>>> GetAdvertsByAdvertType(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], false);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, false);
 
             if (authUser.Error != null)
             {
@@ -95,7 +95,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> PutAdvertType(int id, AdvertTypeDto advertType)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], true);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, true);
 
             if (authUser.Error != null)
             {
@@ -123,7 +123,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<AdvertType>> PostAdvertType(AdvertType advertType)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], true);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, true);
 
             if (authUser.Error != null)
             {
@@ -147,7 +147,7 @@ namespace AutoDaug.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAdvertType(int id)
         {
-            var authUser = _jwtTokenService.ParseUser(Request.Cookies["jwt"], true);
+            var authUser = _jwtTokenService.ParseUser(Request.Headers.Authorization, true);
 
             if (authUser.Error != null)
             {
