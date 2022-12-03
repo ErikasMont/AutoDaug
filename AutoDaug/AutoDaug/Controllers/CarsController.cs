@@ -37,7 +37,14 @@ namespace AutoDaug.Controllers
                 return Unauthorized(authUser.Error);
             }
 
-            return _context.Cars.Any() ? Ok(await _context.Cars.ToListAsync()) : NotFound();
+            var cars = await _context.Cars.ToListAsync();
+
+            if (cars.Count == 0)
+            {
+                return NotFound("No cars found");
+            }
+
+            return Ok(cars);
         }
 
         [HttpGet("{id}")]

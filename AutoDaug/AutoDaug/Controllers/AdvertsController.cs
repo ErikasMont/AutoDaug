@@ -38,7 +38,15 @@ namespace AutoDaug.Controllers
                 return Unauthorized(authUser.Error);
             }
 
-            return _context.Adverts.Any() ? Ok(await _context.Adverts.ToListAsync()) : NotFound();
+            var adverts = authUser.Role == "admin" ? await _context.Adverts.ToListAsync() :
+                await _context.Adverts.Where(x => x.User_Id == authUser.UserId).ToListAsync();
+
+            if (adverts.Count == 0)
+            {
+                return NotFound("No adverts found");
+            }
+
+            return Ok(adverts);
         }
 
         [HttpGet("{id}")]
@@ -91,6 +99,7 @@ namespace AutoDaug.Controllers
             foundAdvert.Price = advert.Price;
             foundAdvert.Name = advert.Name;
             foundAdvert.Description = advert.Description;
+            foundAdvert.AdvertType_Id = advert.AdvertType_Id;
 
             _context.Adverts.Update(foundAdvert);
             await _context.SaveChangesAsync();
