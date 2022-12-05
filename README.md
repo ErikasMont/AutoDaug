@@ -53,3 +53,209 @@ Sistemos sudedamosios dalys:
 Paveikslėlyje pavaizduota kuriamos sistemos diegimo diagrama. Naudotojas turėdamas kompiuterį su naršykle, gali pasiekti internetinę aplikaciją HTTP protokolu. Sugeneruotos užklausos yra perduodamos į sistemos taikomąją programą, kurioje užklausa yra apdorojama, jei reikia ji kreipiasi į SQL Server duomenų bazę JDBC ryšiu, bei naudojantis ORM sąsajom, ir sugeneruojamas atsakas. Visa sistema yra talpianama Azure serveryje.
 
 ![image_test](https://user-images.githubusercontent.com/79359651/191044984-36640eb8-814b-4dd7-bfd1-330ed6a38f1d.png)
+
+# API specifikacija
+## Naudotojų API metodai
+### GET /users
+Gražina sąrašą sistemos naudotojų, prieinamas tik administratoriams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Unauthorized  |401     |
+#### Užklausos pavyzdys
+`GET https://autodaug.azurewebsites.net/api/users`
+#### Atsakymo pavyzdys
+```
+[
+  {
+    "id": 0,
+    "username": "string",
+    "password": "stringst",
+    "phoneNumber": "stringstring",
+    "accountState": "string",
+    "isAdmin": true
+  }
+]
+```
+### GET /users/{id}
+Gražina naudotoją su id, kuris buvo nurodytas užklausos metu, kartu su URL
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Unauthorized  |401     |
+|Not found     |404     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|id            |Taip          | Naudotojo id  | `5`       |
+#### Užklausos pavyzdys
+`GET https://autodaug.azurewebsites.net/api/users/5`
+#### Atsakymo pavyzdys
+```
+{
+  "id": 0,
+  "username": "string",
+  "password": "stringst",
+  "phoneNumber": "stringstring",
+  "accountState": "string",
+  "isAdmin": true
+}
+```
+### PUT /users/{id}
+Atnaujiną naudotoją su duotais parametrais, kurie buvo nurodyti užklausos metu, id kartu su URL, o kiti parametrai perudodami kartu su užklausos body 
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Bad request   |400     |
+|Unauthorized  |401     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|id            |Taip          |Naudotojo id  | `5`       |
+|username      |Taip          |Nautotojo vardas   |`demovardas`   |
+|phoneNumber   |Taip          |Naudotojo telefono numeris   |`+37061234567`   |
+#### Užklausos pavyzdys
+`PUT https://autodaug.azurewebsites.net/api/users/5`
+```
+{
+  "username": "demovardas",
+  "phoneNumber": "+37061234567"
+}
+```
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 200 Success
+```
+### DELETE /users/{id}
+Ištrina naudotoją su nurodytu id per URL
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|No Content    |204     |
+|Unauthorized  |401     |
+|Not found     |404     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|id            |Taip          |Naudotojo id   | `5`       |
+#### Užklausos pavyzdys
+`DELETE https://autodaug.azurewebsites.net/api/users/5`
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 204 No content
+```
+### POST /users/register
+Sukuria naują naudotoją su nurodytais parametrais
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/register`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|No Content    |201     |
+|Bad request   |400     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|username      |Taip          |Naudotojo vardas   |`demovardas`   |
+|password      |Taip          |Naudotojo slaptažodis   |`slaptazodis`   |
+|phoneNumber   |Taip          |Naudotojo telefono numeris   |`+37061234567`   |
+#### Užklausos pavyzdys
+`POST https://autodaug.azurewebsites.net/api/users/register`
+```
+{
+  "username": "demovardas",
+  "password": "slaptazodis",
+  "phoneNumber": "+37061234567"
+}
+```
+#### Atsakymo pavyzdys
+```
+{
+  "id": 0,
+  "username": "demovardas",
+  "password": "hashedpass", 
+  "phoneNumber": "+37061234567",
+  "accountState": "Not Confirmed",
+  "isAdmin": false
+}
+```
+### POST /users/confirm/{id}
+Patvirtina naudotojo registraciją pagal duotą naudotojo id, kuris perduodamas per URL. Funkcija prieinama tik administratoriui
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/confirm/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Bad request   |400     |
+|Unauthorized  |401     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|id            |Taip          |Naudotojo id   | `5`       |
+#### Užklausos pavyzdys
+`POST https://autodaug.azurewebsites.net/api/users/confirm/5`
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 200 Success
+```
+### POST /users/token
+Gražina naudotojo informaciją kartu su sugeneruotu žetonu, kuris vėliau yra naudojamas atpažinti naudotojo rolei
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/token`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Bad request   |400     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|username      |Taip          |Naudotojo vardas   | `demovardas`     |
+|password      |Taip          |Naudotojo slaptažodis   |`slaptazodis`   |
+#### Užklausos pavyzdys
+`POST https://autodaug.azurewebsites.net/api/users/token`
+```
+{
+  "username": "string",
+  "password": "string"
+}
+```
+#### Atsakymo pavyzdys
+```
+{
+  "id": 5,
+  "username": "demovardas",
+  "password": "hashedpass",
+  "isAdmin": false,
+  "token": "token"
+}
+```
+### POST /users/logout
+Atjungia vartotoją nuo sistemos išvalydamas slapukus
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/logout`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+#### Užklausos pavyzdys
+`POST https://autodaug.azurewebsites.net/api/users/logout`
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 200 Success
+```
+
+# Išvados
+Šiame modulyje pavyko realizuoti skelbimų sistemą, bei geriau išmokti front-end technologijas ir kaip patalpinti sistemą į debesis, kad pastaroji būtų prieinama visiems. Kadangi .NET karkasą žinau gerai ir turiu patirties su tuo, back-end pusę implementuoti nebuvo sudėtinga, tačiau daugiau darbo ir pastangų reikėjo įdėti ties front-end puse, nes šis darbas man mažiau patinka ir nematau savęs front-end'o srityje. Bet baigiant projektą tos žinios buvo pagerintos ir einant į pabaigą buvo šiek tiek lengviau.
