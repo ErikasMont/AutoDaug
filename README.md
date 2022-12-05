@@ -260,7 +260,7 @@ Tuščias body su statuso kodu 200 Success
 ### GET /advertTypes
 Gražina sąrašą esamų skelbimų tipų
 #### Metodo URL
-`https://autodaug.azurewebsites.net/api/advertTypes`
+`https://autodaug.azurewebsites.net/api/advertTypes`, funkcija prieinama prisijungusiems naudotojams
 #### Atsakymų kodai
 |Pavadinimas   |Kodas   |
 | ------------ | ------ |
@@ -279,7 +279,7 @@ Gražina sąrašą esamų skelbimų tipų
 ]
 ```
 ### GET /advertTypes/{id}
-Gražina skelbimo tipą, pagal id, kuris perduodamas per URL
+Gražina skelbimo tipą, pagal id, kuris perduodamas per URL, funkcija prieinama prisijungusiems naudotojams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/advertTypes/{id}`
 #### Atsakymų kodai
@@ -377,7 +377,7 @@ Ištrina skelbimo tipą su nurodytu id per URL, funckija prieinama tik administr
 Tuščias body su statuso kodu 204 No content
 ```
 ### GET /advertTypes/{id}/adverts
-Gražina sąrašą skelbimų pagal nurodytą skelbimo tipą
+Gražina sąrašą skelbimų pagal nurodytą skelbimo tipą, funkcija prieinama prisijungusiems naudotojams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/advertTypes/{id}/adverts`
 #### Atsakymų kodai
@@ -403,7 +403,7 @@ Gražina sąrašą skelbimų pagal nurodytą skelbimo tipą
 ```
 ## Skelbimų API metodai
 ### GET /adverts
-Gražina sąrašą esamų skelbimų
+Gražina sąrašą esamų skelbimų, funkcija prieinama prisijungusiems naudotojams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/adverts`
 #### Atsakymų kodai
@@ -427,7 +427,7 @@ Gražina sąrašą esamų skelbimų
 ]
 ```
 ### GET /adverts/{id}
-Gražina skelbimą, pagal id, kuris perduodamas per URL
+Gražina skelbimą, pagal id, kuris perduodamas per URL, funkcija prieinama prisijungusiems naudotojams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/adverts/{id}`
 #### Atsakymų kodai
@@ -450,7 +450,7 @@ Gražina skelbimą, pagal id, kuris perduodamas per URL
 }
 ```
 ### POST /adverts
-Sukuria naują skelbimą su nurodytais parametrais
+Sukuria naują skelbimą su nurodytais parametrais, funkcija prieinama prisijungusiems naudotojams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/advertTypes`
 #### Atsakymų kodai
@@ -490,7 +490,7 @@ Sukuria naują skelbimą su nurodytais parametrais
 }
 ```
 ### PUT /adverts/{id}
-Atnaujiną skelbimą su duotais parametrais, kurie buvo nurodyti užklausos metu, id kartu su URL, o kiti parametrai perudodami kartu su užklausos body
+Atnaujiną skelbimą su duotais parametrais, kurie buvo nurodyti užklausos metu, id kartu su URL, o kiti parametrai perudodami kartu su užklausos body, funkcija prieinama prisijungusiems naudotojams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/adverts/{id}`
 #### Atsakymų kodai
@@ -521,7 +521,7 @@ Atnaujiną skelbimą su duotais parametrais, kurie buvo nurodyti užklausos metu
 Tuščias body su statuso kodu 200 Success
 ```
 ### DELETE /adverts/{id}
-Ištrina skelbimą su nurodytu id per URL
+Ištrina skelbimą su nurodytu id per URL, funkcija prieinama prisijungusiems naudotojams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/adverts/{id}`
 #### Atsakymų kodai
@@ -540,6 +540,180 @@ Ištrina skelbimą su nurodytu id per URL
 ```
 Tuščias body su statuso kodu 204 No content
 ```
-
+## Mašinų API metodai
+### GET /cars
+Gražina sąrašą esamų skelbimų, funkcija prieinama prisijungusiems naudotojams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/cars`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Unauthorized  |401     |
+#### Užklausos pavyzdys
+`GET https://autodaug.azurewebsites.net/api/cars`
+#### Atsakymo pavyzdys
+```
+[
+  {
+    "id": 2,
+    "make": "carmake",
+    "model": "carmodel",
+    "manufactureDate": "2015-05-05",
+    "milage": "64123",
+    "gasType": "Benzinas",
+    "engine": "1.9",
+    "color": "Balta",
+    "gearbox": "Automatinė",
+    "advert_Id": 3,
+    "user_Id": 4
+  }
+]
+```
+### GET /cars/{id}
+Gražina mašiną, pagal id, kuris perduodamas per URL, funkcija prieinama prisijungusiems naudotojams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/cars/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Unauthorized  |401     |
+|Not found     |404     |
+#### Užklausos pavyzdys
+`GET https://autodaug.azurewebsites.net/api/cars/5`
+#### Atsakymo pavyzdys
+```
+{
+  "id": 2,
+  "make": "carmake",
+  "model": "carmodel",
+  "manufactureDate": "2015-05-05",
+  "milage": "64123",
+  "gasType": "Benzinas",
+  "engine": "1.9",
+  "color": "Balta",
+  "gearbox": "Automatinė",
+  "advert_Id": 3,
+  "user_Id": 4
+}
+```
+### POST /cars
+Sukuria naują mašiną su nurodytais parametrais, funkcija prieinama prisijungusiems naudotojams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/cars`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|No Content    |201     |
+|Bad request   |400     |
+|Unauthorized  |401     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|make      |Taip          |Mašinos markė   | `markė`   |
+|model   |Taip          |Mašinos modelis   | `modelis`   |
+|manufactureDate     |Taip    |Mašinos pagaminimo data    | `2015-05-05`   |
+|milage     |Taip    |Mašinos rida    | `64123`   |
+|gasType     |Taip    |Mašinos kuro tipas    | `Benzinas`   |
+|engine     |Taip    |Mašinos variklio darbinis tūris    | `1.9`   |
+|color     |Taip    |Mašinos spalva    | `Balta`   |
+|gearbox     |Taip    |Mašinos greičių dėžės tipas    | `Automatinė`   |
+|advert_Id    |Taip    |Mašinos seklbimo id    | `3`    |
+|user_Id     | Taip     |Naudotojo id, kuriam priklauso ši mašina     | `4`    |
+#### Užklausos pavyzdys
+`POST https://autodaug.azurewebsites.net/api/adverts`
+```
+{
+  "make": "markė",
+  "model": "modelis",
+  "manufactureDate": "2015-05-05",
+  "milage": "64123",
+  "gasType": "Benzinas",
+  "engine": "1.9",
+  "color": "Balta",
+  "gearbox": "Automatinė",
+  "advert_Id": 3,
+  "user_Id": 4
+}
+```
+#### Atsakymo pavyzdys
+```
+{
+  "id": 0,
+  "make": "markė",
+  "model": "modelis",
+  "manufactureDate": "2015-05-05",
+  "milage": "64123",
+  "gasType": "Benzinas",
+  "engine": "1.9",
+  "color": "Balta",
+  "gearbox": "Automatinė",
+  "advert_Id": 3,
+  "user_Id": 4
+}
+```
+### PUT /cars/{id}
+Atnaujiną mašiną su duotais parametrais, kurie buvo nurodyti užklausos metu, id kartu su URL, o kiti parametrai perudodami kartu su užklausos body, funkcija prieinama prisijungusiems naudotojams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/cars/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Bad request   |400     |
+|Unauthorized  |401     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|make      |Taip          |Mašinos markė   | `markė`   |
+|model   |Taip          |Mašinos modelis   | `modelis`   |
+|manufactureDate     |Taip    |Mašinos pagaminimo data    | `2015-05-05`   |
+|milage     |Taip    |Mašinos rida    | `64123`   |
+|gasType     |Taip    |Mašinos kuro tipas    | `Benzinas`   |
+|engine     |Taip    |Mašinos variklio darbinis tūris    | `1.9`   |
+|color     |Taip    |Mašinos spalva    | `Balta`   |
+|gearbox     |Taip    |Mašinos greičių dėžės tipas    | `Automatinė`   |
+|advert_Id    |Taip    |Mašinos seklbimo id    | `3`    |
+#### Užklausos pavyzdys
+`PUT https://autodaug.azurewebsites.net/api/cars/5`
+```
+{
+  "make": "markė",
+  "model": "modelis",
+  "manufactureDate": "2015-05-05",
+  "milage": "64123",
+  "gasType": "Benzinas",
+  "engine": "1.9",
+  "color": "Balta",
+  "gearbox": "Automatinė",
+  "advert_Id": 3,
+  "user_Id": 4
+}
+```
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 200 Success
+```
+### DELETE /cars/{id}
+Ištrina mašiną su nurodytu id per URL, funkcija prieinama prisijungusiems naudotojams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/cars/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|No Content    |204     |
+|Unauthorized  |401     |
+|Not found     |404     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|id            |Taip          |Skelbimo id   | `5`       |
+#### Užklausos pavyzdys
+`DELETE https://autodaug.azurewebsites.net/api/cars/5`
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 204 No content
+```
 # Išvados
 Šiame modulyje pavyko realizuoti skelbimų sistemą, bei geriau išmokti front-end technologijas ir kaip patalpinti sistemą į debesis, kad pastaroji būtų prieinama visiems. Kadangi .NET karkasą žinau gerai ir turiu patirties su tuo, back-end pusę implementuoti nebuvo sudėtinga, tačiau daugiau darbo ir pastangų reikėjo įdėti ties front-end puse, nes šis darbas man mažiau patinka ir nematau savęs front-end'o srityje. Bet baigiant projektą tos žinios buvo pagerintos ir einant į pabaigą buvo šiek tiek lengviau.
