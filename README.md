@@ -121,8 +121,8 @@ Atnaujiną naudotoją su duotais parametrais, kurie buvo nurodyti užklausos met
 |Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
 | ------------ | ------------ | ------------- | --------- |
 |id            |Taip          |Naudotojo id  | `5`       |
-|username      |Taip          |Nautotojo vardas   |`demovardas`   |
-|phoneNumber   |Taip          |Naudotojo telefono numeris   |`+37061234567`   |
+|username      |Taip          |Nautotojo vardas   | `demovardas`   |
+|phoneNumber   |Taip          |Naudotojo telefono numeris   | `+37061234567`   |
 #### Užklausos pavyzdys
 `PUT https://autodaug.azurewebsites.net/api/users/5`
 ```
@@ -136,7 +136,7 @@ Atnaujiną naudotoją su duotais parametrais, kurie buvo nurodyti užklausos met
 Tuščias body su statuso kodu 200 Success
 ```
 ### DELETE /users/{id}
-Ištrina naudotoją su nurodytu id per URL
+Ištrina naudotoją su nurodytu id per URL, funckija prieinama tik administratoriams
 #### Metodo URL
 `https://autodaug.azurewebsites.net/api/users/{id}`
 #### Atsakymų kodai
@@ -167,9 +167,9 @@ Sukuria naują naudotoją su nurodytais parametrais
 #### Parametrai
 |Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
 | ------------ | ------------ | ------------- | --------- |
-|username      |Taip          |Naudotojo vardas   |`demovardas`   |
-|password      |Taip          |Naudotojo slaptažodis   |`slaptazodis`   |
-|phoneNumber   |Taip          |Naudotojo telefono numeris   |`+37061234567`   |
+|username      |Taip          |Naudotojo vardas   | `demovardas`   |
+|password      |Taip          |Naudotojo slaptažodis   | `slaptazodis`   |
+|phoneNumber   |Taip          |Naudotojo telefono numeris   | `+37061234567`   |
 #### Užklausos pavyzdys
 `POST https://autodaug.azurewebsites.net/api/users/register`
 ```
@@ -223,7 +223,7 @@ Gražina naudotojo informaciją kartu su sugeneruotu žetonu, kuris vėliau yra 
 |Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
 | ------------ | ------------ | ------------- | --------- |
 |username      |Taip          |Naudotojo vardas   | `demovardas`     |
-|password      |Taip          |Naudotojo slaptažodis   |`slaptazodis`   |
+|password      |Taip          |Naudotojo slaptažodis   | `slaptazodis`   |
 #### Užklausos pavyzdys
 `POST https://autodaug.azurewebsites.net/api/users/token`
 ```
@@ -255,6 +255,151 @@ Atjungia vartotoją nuo sistemos išvalydamas slapukus
 #### Atsakymo pavyzdys
 ```
 Tuščias body su statuso kodu 200 Success
+```
+## Skelbimų tipų API metodai
+### GET /advertTypes
+Gražina sąrašą esamų skelbimų tipų
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/advertTypes`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Unauthorized  |401     |
+#### Užklausos pavyzdys
+`GET https://autodaug.azurewebsites.net/api/advertTypes`
+#### Atsakymo pavyzdys
+```
+[
+  {
+    "id": 5,
+    "name": "type of advert",
+    "description": "description of the type"
+  }
+]
+```
+### GET /advertTypes/{id}
+Gražina skelbimo tipą, pagal id, kuris perduodamas per URL
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/advertTypes/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Unauthorized  |401     |
+|Not found     |404     |
+#### Užklausos pavyzdys
+`GET https://autodaug.azurewebsites.net/api/advertTypes/5`
+#### Atsakymo pavyzdys
+```
+{
+  "id": 5,
+  "name": "type of advert",
+  "description": "description of the type"
+}
+```
+### POST /advertTypes
+Sukuria naują skelbimo tipą su nurodytais parametrais, funckija prieinama tik administratoriams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/advertTypes`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|No Content    |201     |
+|Bad request   |400     |
+|Unauthorized  |401     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|name      |Taip          |Skelbimo tipo pavadinimas   | `pavadinimas`   |
+|description   |Taip          |Skelbimo tipo aprašymas   | `aprašymas skelbimo tipui`   |
+#### Užklausos pavyzdys
+`POST https://autodaug.azurewebsites.net/api/advertTypes`
+```
+}
+  "name": "pavadinimas",
+  "description": "aprašymas skelbimo tipui"
+}
+```
+#### Atsakymo pavyzdys
+```
+{
+  "id": 5,
+  "name": "pavadinimas",
+  "description": "aprašymas skelbimo tipui"
+}
+```
+### PUT /advertTypes/{id}
+Atnaujiną skelbimo tipą su duotais parametrais, kurie buvo nurodyti užklausos metu, id kartu su URL, o kiti parametrai perudodami kartu su užklausos body, funckija prieinama tik administratoriams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/advertTypes/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Bad request   |400     |
+|Unauthorized  |401     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|name      |Taip          |Skelbimo tipo pavadinimas   | `pavadinimas`   |
+|description   |Taip          |Skelbimo tipo aprašymas   | `aprašymas skelbimo tipui`   |
+#### Užklausos pavyzdys
+`PUT https://autodaug.azurewebsites.net/api/advertTypes/5`
+```
+{
+  "name": "pavadinimas",
+  "description": "aprašymas skelbimo tipui"
+}
+```
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 200 Success
+```
+### DELETE /advertType/{id}
+Ištrina skelbimo tipą su nurodytu id per URL, funckija prieinama tik administratoriams
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/users/{id}`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|No Content    |204     |
+|Unauthorized  |401     |
+|Not found     |404     |
+#### Parametrai
+|Pavadinimas   |Ar būtinas?   |Apibūdinimas   |Pavyzdys   |
+| ------------ | ------------ | ------------- | --------- |
+|id            |Taip          |Skelbimo tipo id   | `5`       |
+#### Užklausos pavyzdys
+`DELETE https://autodaug.azurewebsites.net/api/advertTypes/5`
+#### Atsakymo pavyzdys
+```
+Tuščias body su statuso kodu 204 No content
+```
+### GET /advertTypes/{id}/adverts
+Gražina sąrašą skelbimų pagal nurodytą skelbimo tipą
+#### Metodo URL
+`https://autodaug.azurewebsites.net/api/advertTypes/{id}/adverts`
+#### Atsakymų kodai
+|Pavadinimas   |Kodas   |
+| ------------ | ------ |
+|OK            |200     |
+|Unauthorized  |401     |
+|Not found     |404     |
+#### Užklausos pavyzdys
+`GET https://autodaug.azurewebsites.net/api/advertTypes/5/adverts`
+#### Atsakymo pavyzdys
+```
+[
+  {
+    "id": 1,
+    "name": "skelbimas",
+    "description": "skelbimo aprašymas",
+    "price": 1500,
+    "advertType_Id": 5,
+    "user_Id": 2
+  }
+]
 ```
 
 # Išvados
