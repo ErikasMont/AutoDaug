@@ -715,5 +715,18 @@ Ištrina mašiną su nurodytu id per URL, funkcija prieinama prisijungusiems nau
 ```
 Tuščias body su statuso kodu 204 No content
 ```
+# Naudotojo sąsaja
+## Prisijungimo langas
+![image](https://user-images.githubusercontent.com/79359651/206660603-a04ce34a-0db7-4069-8e88-510b06091ea7.png)
+Prisijungus nueinama į pagrindinį puslapį priklausomai pagal rolę, taip pat iš šio lango galima ir užsiregistruoti į sistemą
+
+## Registracijos langas
+![image](https://user-images.githubusercontent.com/79359651/206661058-dcfb80c3-d902-4c87-8efd-9fc3c1bf9d75.png)
+Registracijos lange įvedus informaciją gaunamas pranešimas, jog naudotojas užregistruotas sėkmingai ir reikia laukti administratoriaus patvirtinimo
+
+## Modalinis naudongos informacijos langas
+![image](https://user-images.githubusercontent.com/79359651/206661436-e3d2504a-3f2a-4f49-bbed-5b1411498b38.png)
+Paspaudus „Useful info“ mygtuką, atidaromas šis modalinis langas, kuriame galite matyti informaciją norint prisiregistruoti
+
 # Išvados
 Šiame modulyje pavyko realizuoti skelbimų sistemą, bei geriau išmokti front-end technologijas ir kaip patalpinti sistemą į debesis, kad pastaroji būtų prieinama visiems. Kadangi .NET karkasą žinau gerai ir turiu patirties su tuo, back-end pusę implementuoti nebuvo sudėtinga, tačiau daugiau darbo ir pastangų reikėjo įdėti ties front-end puse, nes šis darbas man mažiau patinka ir nematau savęs front-end'o srityje. Bet baigiant projektą tos žinios buvo pagerintos ir einant į pabaigą buvo šiek tiek lengviau.
