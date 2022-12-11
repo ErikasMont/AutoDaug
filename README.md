@@ -728,5 +728,84 @@ Registracijos lange įvedus informaciją gaunamas pranešimas, jog naudotojas u�
 ![image](https://user-images.githubusercontent.com/79359651/206661436-e3d2504a-3f2a-4f49-bbed-5b1411498b38.png)
 Paspaudus „Useful info“ mygtuką, atidaromas šis modalinis langas, kuriame galite matyti informaciją norint prisiregistruoti
 
+## Administratoriaus pagrindinis langas
+![image](https://user-images.githubusercontent.com/79359651/206893331-e9f1d6fe-e7b9-4ec2-9e91-fd6908e9b982.png)
+Administratoriui prisijungus matomas šis vaizdas su administratoriaus navigacijos juosta ir pagrindine tinklapio funkcija, naršyti skelbimus pagal tipą
+
+## Visų naudotojų langas
+![image](https://user-images.githubusercontent.com/79359651/206893394-af964330-5d31-4172-89bb-f1d949469d5a.png)
+Šiame lange administratorius paspaudęs ant Confirm user mygtuko patvirtina naudotojo registraciją ir jo statusas pasikeičia į patvirtintą. Taip pat, administratorius gali šalinti naudotojus iš sistemos šiame lange
+
+## Skelbimų tipų langas
+![image](https://user-images.githubusercontent.com/79359651/206893455-5adbddcf-ea56-4832-9a24-4968488fb128.png)
+Šiame lange administratorius gali peržiūrėti visus skelbimo tipus, ištrinti skelbimo tipą jei jis neturi skelbimų, redaguoti kurį nors skelbimą arba pridėti naują
+
+## Skelbimo tipo redagavimo langas
+![image](https://user-images.githubusercontent.com/79359651/206893513-d1603e9d-4d9d-4d0d-931f-bbd6c8e60914.png)
+Šiame lange redaguojama skelbimo tipo informacija, į laukus automatiškai yra užpildoma esama informacija ir ją galima koreguoti. Baigus redagavimą renkamės Confirm data mygtuką ir duomenys bus atnaujinti, priešingu atveju galime grįžti į skelbimų tipu lentelę
+
+## Naujo skelbimo pridėjimo langas
+![image](https://user-images.githubusercontent.com/79359651/206893608-094cd80a-481a-4957-885d-beb5ea728844.png)
+Šiame lange galime įvesti informaciją naujam skelbimo tipui pridėti
+
+## Visų skelbimų langas
+![image](https://user-images.githubusercontent.com/79359651/206893635-72e1bcaf-37f4-487e-94f0-41fd143e292d.png)
+Šiame lange administratorius gali matyti visus skelbimus esamus sistemoje, iš čia galima pasirinkti juos redaguoti arba pašalinti, jei skelbimas neturi automobilio
+
+## Visų mašinų langas
+![image](https://user-images.githubusercontent.com/79359651/206893690-af9ddf7c-904b-4a20-82c9-3f67414cf6b1.png)
+Šiame lange administratorius gali matyti visus automobilius esamus sistemoje, iš čia galima pasirinkti juos redaguoti arba pašalinti
+
+## Naudotojo pagrindinis langas
+![image](https://user-images.githubusercontent.com/79359651/206893745-fb0f23ef-d0c4-45ef-acf9-c0cd3b2dbcb2.png)
+Šis langas yra matomas paprastam naudotojui, kuris yra užsiregistravęs ir jo registracija buvo patvirtinta, rodomas navigacijos meniu, kuriame naudotojas gali matyti savo automobilius ir savo skelbimus, bei koreguoti savo profilio informaciją
+
+## Profilio informacijos langas
+![image](https://user-images.githubusercontent.com/79359651/206893805-5f5cef22-4764-4d01-9af9-6d5b6f039580.png)
+Šiame lange naudotojas gali koreguoti savo profilio informaciją, patvirtinus profilio informacija yra pakeičiama ir jei naudotojo vardas buvo pakeistas, reikia prisijungti jau nauju naudotojo vardu
+
+## Naudotojo skelbimų langas
+![image](https://user-images.githubusercontent.com/79359651/206893886-ddc62d38-ffaa-4475-9b8a-705da9816126.png)
+Šiame lange naudotojas gali pridėti naują skelbimą, matyti jau esamus skelbimus, pasirinkti vieną iš jų redagavimui arba pašalinimui su sąlyga, kad šis neturi jokių automobilių
+
+## Skelbimo redagavimo langas
+![image](https://user-images.githubusercontent.com/79359651/206893917-6a3a4263-6409-43f6-8138-1820d8ffe005.png)
+Šiame lange naudotojas gali redaguoti savo skelbimą, informacija užpildoma automatiškai
+
+## Naujo skelbimo pridėjimo langas
+![image](https://user-images.githubusercontent.com/79359651/206893956-821e6e05-7a91-4344-9bf1-11299028102e.png)
+Šiame lange naudotojas gali pridėti naują skelbimą
+
+## Naudotojo automobilių langas
+![image](https://user-images.githubusercontent.com/79359651/206893982-dba74605-7018-47f4-9c57-5813829fb4b7.png)
+Šiame lange naudotojas gali matyti visus savo automobilius, pridėti naują automobilį, pasirinkti vieną iš jų redaguoti arba pašalinti
+
+## Automobilio redagavimo langas
+![image](https://user-images.githubusercontent.com/79359651/206894028-86adcd8f-b528-4c3e-9e1f-6bdc6fc5ee7b.png)
+Šiame lange naudotojas gali redaguoti savo automobilio informaciją, ji yra užpildoma automatiškai
+
+## Naujo automobilio langas
+![image](https://user-images.githubusercontent.com/79359651/206894051-372212d0-b438-4c01-b4f4-95e41e680ae6.png)
+Šiame lange naudotojas gali pridėti naują automobilį į sistemą ir priskirti jam skelbimą
+
+## Skelbimų naršymas
+![image](https://user-images.githubusercontent.com/79359651/206894102-4609d865-3657-4bda-b132-ce67c6e69d2e.png)
+Pasirinkus skelbimo tipą ir paspaudus mygtuką Search, gaunamas langas skelbimų pagal pasirinktą tipą
+
+![image](https://user-images.githubusercontent.com/79359651/206894127-617f769a-f405-4416-8dd2-2e9506cf816a.png)
+Paspaudus ant kurio nors skelbimo galime matyti detalesnę jo informaciją
+
+![image](https://user-images.githubusercontent.com/79359651/206894163-59a7a243-a96e-41e7-b77f-066cd4124f87.png)
+Čia yra skelbimo su automobiliu langas
+
+![image](https://user-images.githubusercontent.com/79359651/206894181-80f3e6e8-2bb8-4aa2-a9d7-806b6cb2add2.png)
+Čia yra skelbimo be automobilio langas
+
+## Tinklapio pritaikymas mobiliems įrenginiams
+![image](https://user-images.githubusercontent.com/79359651/206894214-4bf0b5c3-1f3d-4425-9680-ed5c591717e8.png)
+![image](https://user-images.githubusercontent.com/79359651/206894232-a9595c3e-5bc4-423e-b0a9-cae2958ff1aa.png)
+
+Navigacijos meniu pasikeičia, jei yra tinklapis yra prieinamas iš mobilaus įrenginio
+
 # Išvados
 Šiame modulyje pavyko realizuoti skelbimų sistemą, bei geriau išmokti front-end technologijas ir kaip patalpinti sistemą į debesis, kad pastaroji būtų prieinama visiems. Kadangi .NET karkasą žinau gerai ir turiu patirties su tuo, back-end pusę implementuoti nebuvo sudėtinga, tačiau daugiau darbo ir pastangų reikėjo įdėti ties front-end puse, nes šis darbas man mažiau patinka ir nematau savęs front-end'o srityje. Bet baigiant projektą tos žinios buvo pagerintos ir einant į pabaigą buvo šiek tiek lengviau.
